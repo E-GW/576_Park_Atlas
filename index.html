@@ -67,6 +67,22 @@
         position: "top-left", //set search widget in top-left of map
         index: 2
         });
+
+
+        const popup_wiParks = {
+        "title": "Park Information",
+        "content": "<b>Name:</b> {NAME}<br> <b>Type:</b> {FEATTYPE} <br> <b>Area:</b> {SQMI} square miles"
+        };
+         //adding the Const for the feature layer
+        const wiParksLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Detailed_Parks/FeatureServer",
+        //adding the popup here
+        popupTemplate: popup_wiParks
+        });
+        //adding the feature layer to the map
+        map.add(wiParksLayer);
+
+
     });  
     </script>
 
