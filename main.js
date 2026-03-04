@@ -169,6 +169,19 @@
     opacity: 0.6 // so basemap labels for parks show through
     }); map.add(wiParksLayer); // add feature layer to map
 
+// Legend Elements:
+
+    const myLegend = new Legend ({
+      view: view,
+      layerInfos: [{layer: wiParksLayer},{layer: surveyLayer}],
+    });
+    const legendExpand = new Expand ({
+      view: view,
+      content: myLegend
+    })
+    view.ui.add(legendExpand, "top-right"); // put legend in expandable tab
+
+
 // Editor Elements:
     // feature layers to feed into the editor:
     const pointInfos = {
