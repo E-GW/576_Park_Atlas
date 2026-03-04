@@ -57,7 +57,7 @@
         view: view,
         content: basemapGallery 
     });
-    view.ui.add(expand, "top-left"); //set expandable tab location
+    view.ui.add(expand, "top-right"); //set expandable tab location
 
     // search widget:
     const search = new Search({
@@ -77,10 +77,31 @@
     "content": "<b>Date and Time:</b> {note_the_date_and_time_of_the_i}<br> <b>Description:</b> {incident_details} <br> <b>Edit Incident:</b> <a href=https://survey123.arcgis.com/share/39d43140fb4a474fb9292e828b60c619?mode=edit&globalId={globalid}&version=latest>Edit Response</a>"
     };    
 
+    const simpleMarkerSymbol = {  
+    type: "simple-marker",
+    style: "circle",
+    size: "8px",  
+    outline: {  
+      color: [204, 85, 0], // burnt orange  
+      width: 2
+      }  
+    };
+
+    const surveyRenderer = {
+    type: "simple",
+    symbol: {
+        type: "picture-marker",
+        url: "https://kmlitchen.github.io/576_Park_Atlas/exclamation.png", 
+        width: "14px",
+        height: "14px"
+        }
+    }
+
     const surveyLayer = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_39d43140fb4a474fb9292e828b60c619_results/FeatureServer",
         popupTemplate: popup_Survey,
         tite: "Incident Report",
+        renderer: surveyRenderer
     });
     
     map.add(surveyLayer);
@@ -96,15 +117,13 @@
     const parkName = {
       symbol: {
         type: "text",
-        color: "#ff5c33",
         font: {
-          size: "10px",
+          size: "9px",
           family: "Noto Sans",
           style: "italic",
           weight: "normal"
         }
       },
-      labelPlacement: "above-right",
       labelExpressionInfo: {
         expression: "$feature.Name"
       }
