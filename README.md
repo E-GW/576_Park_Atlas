@@ -1,6 +1,6 @@
 # GEOG 576 Midterm Project - 
 
-Park Atlas Description 
+Park Atlas Description:
 - Includes WI parks and forests ranging from national to local level
 - Users can update features to indicate parks they have visited as well as to rate and leave reviews
 - Users can also add and edit incident reports with spatial and temporal tags
