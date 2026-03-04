@@ -6,22 +6,13 @@
     // for api key:
     "esri/config",
     // for map elements, custom basemap
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/Basemap",
-    "esri/layers/VectorTileLayer",
+    "esri/Map", "esri/views/MapView", "esri/Basemap","esri/layers/VectorTileLayer",
     // for all widgets used
-    "esri/widgets/BasemapGallery",
-    "esri/widgets/Expand",
-    "esri/widgets/Locate",
-    "esri/widgets/Search",
-    "esri/widgets/Editor",
-    "esri/widgets/Legend",
-    // new modules for graphics and feature layers
-    "esri/Graphic",  
-    "esri/layers/GraphicsLayer",
-    "esri/layers/FeatureLayer"
-    // add all modules to fx - 
+    "esri/widgets/BasemapGallery","esri/widgets/Expand","esri/widgets/Locate","esri/widgets/Search",
+    "esri/widgets/Editor","esri/widgets/Legend",
+    // for graphics and feature layers
+    "esri/Graphic",  "esri/layers/GraphicsLayer", "esri/layers/FeatureLayer"
+    // all modules added to fx - 
 ], function(esriConfig, Map, MapView, Basemap, vectorTileLayer, BasemapGallery, Expand, Locate, Search, Editor, Legend, Graphic, GraphicsLayer, FeatureLayer) {   
         
     // esri api key
@@ -45,8 +36,8 @@
     // map view + properties:
     const view = new MapView({  
     map: map,
-    center: [-89.8173, 44.6536], 
-    zoom: 6,                 
+    center: [-89.384, 43.075], 
+    zoom: 10,                 
     container: "Map", // div element
     constraints: {
         minScale: 100,
@@ -62,37 +53,86 @@
     const basemapGallery = new BasemapGallery({
     view: view,
     });
-    
     const expand = new Expand({ // put basemap gallery widget in an expandable tab 
         view: view,
         content: basemapGallery 
     });
-    view.ui.add(expand, "bottom-left"); //set expandable tab in bottom-left of map
+    view.ui.add(expand, "top-left"); //set expandable tab location
 
     // search widget:
     const search = new Search({
     view: view
     });
-    view.ui.add(search, "bottom-left"); // set location
+    view.ui.add(search, "bottom-left"); // set search bar location
 
     // locate widget: 
     const locate = new Locate({
     view: view
     });
-    view.ui.add(locate, "bottom-left") // set location
+    view.ui.add(locate, "bottom-left") // set locate button location
+
+//Incident Survey Feature Layer:
+    const popup_Survey = {
+    "title": "Incident Details:",
+    "content": "<b>Date and Time:</b> {note_the_date_and_time_of_the_i}<br> <b>Description:</b> {incident_details} <br> <b>Edit Incident:</b> <a href=https://survey123.arcgis.com/share/39d43140fb4a474fb9292e828b60c619?mode=edit&globalId={globalid}&version=latest>Edit Response</a>"
+    };    
+
+    const surveyLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_39d43140fb4a474fb9292e828b60c619_results/FeatureServer",
+        popupTemplate: popup_Survey,
+        tite: "Incident Report",
+    });
+    
+    map.add(surveyLayer);
+
 
 // Parks Feature Layer Elements:
+    // popup content:
     const popup_wiParks = {
     "title": "Park Information:",
     "content": "<b>Name:</b> {NAME}<br> <b>Category:</b> {FEATTYPE} <br> <b>Area:</b> {SQMI} square miles"
     };
-    //adding the Const for the feature layer
+    // 
+    const parkName = {
+      symbol: {
+        type: "text",
+        color: "#ff5c33",
+        font: {
+          size: "10px",
+          family: "Noto Sans",
+          style: "italic",
+          weight: "normal"
+        }
+      },
+      labelPlacement: "above-right",
+      labelExpressionInfo: {
+        expression: "$feature.Name"
+      }
+    };
+    // parks feature layer:
     const wiParksLayer = new FeatureLayer({
-    url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Detailed_Parks/FeatureServer/",
-    //adding the popup here
-    popupTemplate: popup_wiParks
+    url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/576_WI_Parks/FeatureServer",
+    popupTemplate: popup_wiParks, // pull pop-up
+    //labelingInfo: [parkName]
     });
-    //adding the feature layer to the map
-    map.add(wiParksLayer);
+    map.add(wiParksLayer); // add feature layer to map
+
+    // Set the point layer's LayerInfo
+    const pointInfos = {
+      layer: ({wiParksLayer, surveyLayer})
+    }
+
+// Editor Elements:
+    // editor constructor
+    const editor = new Editor({
+      view: view,
+      layerInfos: [pointInfos],
+    });
+
+    const editorExpand = new Expand({ //put editor in an expandable tab
+        view: view,
+        content: editor
+    });
+    view.ui.add(editorExpand, "top-right"); //set expandable tab location
 
 });
