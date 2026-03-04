@@ -9,10 +9,10 @@
     "esri/Map", "esri/views/MapView", "esri/Basemap","esri/layers/VectorTileLayer",
     // for all widgets used
     "esri/widgets/BasemapGallery","esri/widgets/Expand","esri/widgets/Locate","esri/widgets/Search","esri/widgets/Editor","esri/widgets/Legend",
-    // for graphics and feature layers (no graphics, actually)
-    "esri/Graphic",  "esri/layers/GraphicsLayer", "esri/layers/FeatureLayer", 
+    // for feature layers (no graphics, actually)
+    "esri/layers/FeatureLayer", 
     // all modules added to fx - 
-], function(esriConfig, Map, MapView, Basemap, vectorTileLayer, BasemapGallery, Expand, Locate, Search, Editor, Legend, Graphic, GraphicsLayer, FeatureLayer, LabelClass) {   
+], function(esriConfig, Map, MapView, Basemap, vectorTileLayer, BasemapGallery, Expand, Locate, Search, Editor, Legend, FeatureLayer) {   
         
     // esri api key:
     esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurBvZ7IXFuSOhRBuDgv645DOBpnCJ2vtGJsSqd0m31lu7G8oTSCniq7WBlH5N3K2i5Kk1zQ90Yxo4NRi0pv9a9tVhNCaTXh4UYBVSuMTZ4n-VHPYlh3hbIHglPgtC4dS9xt9DvdwtH300t76D_qaoPY1hHx-ZWazuU7A71NQteoVL5YMZ3d0qyiM8FhAB_8wsn9Lfxg-Z0qlqMFoRqQ2XStDdlWe0dU69PsLBWTeob7thAT1_t2Pq0hM2"
@@ -44,7 +44,7 @@
     },
     });                         
     
-// Widgets and Customization:
+//**Widgets and Customization:
     // move +/- zoom buttons:
     view.ui.move("zoom", "bottom-right");
     
@@ -70,11 +70,11 @@
     });
     view.ui.add(locate, "bottom-left") // set locate button location
 
-//Incident Survey Feature Layer:
+//**Incident Survey Feature Layer:
     // pop-up for survey results -> contains link to edit the details:
     const popup_Survey = {
     "title": "Incident Details:",
-    "content": "<b>Date and Time:</b> {note_the_date_and_time_of_the_i}<br> <b>Description:</b> {incident_details} <br> <b>Edit Incident:</b> <a href=https://survey123.arcgis.com/share/39d43140fb4a474fb9292e828b60c619?mode=edit&globalId={globalid}&version=latest>Edit Response</a>"
+    "content": "<b>Date and Time:</b> {note_the_date_and_time_of_the_i}<br> <b>Description:</b> {incident_details} <br> <a href=https://survey123.arcgis.com/share/39d43140fb4a474fb9292e828b60c619?mode=edit&globalId={globalid}&version=latest><b>Edit Response</b></a>"
     };    
     
     // renderer for incident style icon: 
@@ -97,12 +97,12 @@
     }); map.add(surveyLayer); // add feature layer to map
 
 
-// Parks Feature Layer Elements:
+//**Parks Feature Layer Elements:
     // popup content:
     const popup_wiParks = {
     "title": "Park Information:",
     "content": "<b>Name:</b> {NAME}<br> <b>Category:</b> {FEATTYPE} <br> <b>Area:</b> {SQMI} square miles <br><b>Visited:</b> {VISTITED}<br> <b>Rating:</b> {RATING}<br> <b>Review:</b> {REVIEW}<br>"
-    };
+    }; // wanted to also make this editable from the pop-up but idk
     
     // park name labels -> not used, too much overprinting!
     const parkName = {
@@ -125,7 +125,6 @@
       type: "unique-value",
       field: "FEATTYPE",
       defaultSymbol: { type: "simple-fill" },
-      //valueExpression: When(IsEmpty($feature.VISITED), 'Null', $feature.VISITED),
       uniqueValueInfos: [{
         value: "National park or forest",
         symbol: {
@@ -148,14 +147,13 @@
         value: "Regional park",
         symbol: {
             type: "simple-fill",
-            color: "#bae4b3"
+            color: "#a1d99b"
         }
         },{
         value: "Local park",
         symbol: {
             type: "simple-fill",
-            color: "#edf8e9",
-            opacity: "50%"
+            color: "#c7e9c0",
         }
         }]
       };
@@ -166,15 +164,16 @@
     popupTemplate: popup_wiParks, 
     //abelingInfo: [parkName], // un-comment to add back the park name labels if desired
     renderer: parkRenderer,
-    opacity: 0.6 // so basemap labels for parks show through
+    opacity: 0.6 // so default basemap labels for parks show through (in lieu of custom labels)
     }); map.add(wiParksLayer); // add feature layer to map
 
-// Legend Elements:
-
+//**Legend Elements:
+    // legend constructor:
     const myLegend = new Legend ({
       view: view,
       layerInfos: [{layer: wiParksLayer},{layer: surveyLayer}],
     });
+    // put legend in expandable widget:
     const legendExpand = new Expand ({
       view: view,
       content: myLegend
@@ -182,16 +181,11 @@
     view.ui.add(legendExpand, "top-right"); // put legend in expandable tab
 
 
-// Editor Elements:
-    // feature layers to feed into the editor:
-    const pointInfos = {
-      layer: ({wiParksLayer, surveyLayer})
-    }
-
+//**Editor Elements:
     // editor constructor:
     const editor = new Editor({
       view: view,
-      layerInfos: [pointInfos],
+      layerInfos: [{layer: wiParksLayer},{layer: surveyLayer}],
     });
 
     // expand widget for editor:
