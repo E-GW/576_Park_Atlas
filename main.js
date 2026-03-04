@@ -91,7 +91,7 @@
     type: "simple",
     symbol: {
         type: "picture-marker",
-        url: "https://kmlitchen.github.io/576_Park_Atlas/exclamation.png", 
+        url: "https://kmlitchen.github.io/576_Park_Atlas/data/exclamation.png", 
         width: "14px",
         height: "14px"
         }
