@@ -18,7 +18,7 @@
 ], function(esriConfig, Map, MapView, Basemap, VectorTileLayer, BasemapGallery, Expand, Locate, Search, Editor, Legend, FeatureLayer) {   
         
     // esri api key:
-    esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurBJmF1dHA4CHzUZ4f7XXY9MumVDFdZwWOV0pYRQMOAc7ZaqvOZxcqTmdHYg4uq0LAzk5EA8UDp0afz4N38c05_g1e4nZkAsxtdl9eWtAkFEOzYhK5sSy0SSdy9kSZ2kK797kJHpMrR-VHPYlh3hbIHglPgtC4dS9xt9DvdwtH300t76D_qaoPY1hHx-ZWazuU7A71NQteoVL5YMZ3d0qyiM8FhAB_8wsn9Lfxg-Z0qlqMFoRqQ2XStDdlWe0dU69PsLBWTeob7thAT1_t2Pq0hM2"
+    esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurBJmF1dHA4CHzUZ4f7XXY9MumVDFdZwWOV0pYRQMOAc7ZaqvOZxcqTmdHYg4uq0LAzk5EA8UDp0afz4N38c05_g1e4nZkAsxtdl9eWtAkFEOzYhK5sSy0SSdy9kSZ2kK797kJHpMrR-d0v7pjLT7kO2zAR9lbfIj2YY8PY1C_ARAz5SGHU8AQF_B146E-iEsWLrzafOtmDmUKhSkdT9BEWgLhqy6WzEsPYTj7B_66V6MAT1_eplYvQF3"
         
 
 
